@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -20,30 +21,27 @@ public class UserResource {
 
     @GetMapping
     public List<User> getAllUsers(){
-        return null;
+        return userService.getUsers();
     }
 
     @GetMapping("/{id}")
-    public User findUserById(@PathVariable("id") int id){
-        System.out.println(id);
-        return null;
+    public Optional<User> findUserById(@PathVariable("id") int id){
+        return userService.findById(id);
     }
 
     @PostMapping
     public User createUser(@RequestBody User user){
-        System.out.println(user);
-        return null;
+        return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable("id") int id ,@RequestBody User user){
-        System.out.println(user);
-        return null;
+        return userService.updateUser(user);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") int id){
-        System.out.println(id);
+    public void deleteUser(@PathVariable("id") int id ,@RequestBody User user){
+        userService.deleteUser(user);
     }
 
 }
