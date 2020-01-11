@@ -1,13 +1,24 @@
 import React from 'react';
 import './App.css';
-import Navbar from "./Components/Navbar";
+import Sidebar from "./Components/Sidebar";
+import DashButton from "./Components/DashButton"
 
-function App() {
-  return (
-    <div className="App">
-      <Navbar/>
-    </div>
-  );
+class App extends React.Component {
+
+    componentDidMount() {
+
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Sidebar/>
+                <div className="main">
+                    <DashButton name={"Pink"}/>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;
