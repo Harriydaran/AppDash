@@ -12,36 +12,36 @@ import java.util.Optional;
 @RequestMapping("api/v1/users")
 public class UserResource {
 
-    private UserService userService;
+  private UserService userService;
 
-    @Autowired
-    public UserResource(UserService userService) {
-        this.userService = userService;
-    }
+  @Autowired
+  public UserResource(UserService userService) {
+    this.userService = userService;
+  }
 
-    @GetMapping
-    public List<User> getAllUsers(){
-        return userService.getUsers();
-    }
+  @GetMapping
+  public List<User> getAllUsers() {
+    return userService.getUsers();
+  }
 
-    @GetMapping("/{id}")
-    public Optional<User> findUserById(@PathVariable("id") int id){
-        return userService.findById(id);
-    }
+  @GetMapping("/{id}")
+  public Optional<User> findUserById(@PathVariable("id") int id) {
+    return userService.findById(id);
+  }
 
-    @PostMapping
-    public User createUser(@RequestBody User user){
-        return userService.createUser(user);
-    }
+  @PostMapping
+  public User createUser(@RequestBody User user) {
+    return userService.createUser(user);
+  }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable("id") int id ,@RequestBody User user){
-        return userService.updateUser(user);
-    }
+  @PutMapping
+  public User updateUser(@RequestBody User user) {
+    return userService.updateUser(user);
+  }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") int id ,@RequestBody User user){
-        userService.deleteUser(user);
-    }
+  @DeleteMapping()
+  public void deleteUser(@RequestBody User user) {
+    userService.deleteUser(user);
+  }
 
 }
