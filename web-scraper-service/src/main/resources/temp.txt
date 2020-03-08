@@ -1,0 +1,56 @@
+//*[@id="fcxH9b"]/div[4]/c-wiz[2]/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div[201]/div/div[2]/div[2]/span[1]
+//*[@id="fcxH9b"]/div[4]/c-wiz[2]/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div[72]/div/div[2]/div[2]/span[1]
+//*[@id="fcxH9b"]/div[4]/c-wiz[2]/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div[65]/div/div[2]/div[2]/span[1]
+
+//*[@id="fcxH9b"]/div[4]/c-wiz[4]/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div[27]/div/div[2]/div[2]/span[1]
+//*[@id="fcxH9b"]/div[4]/c-wiz[2]/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div[2]/div/div[2]/div[2]/span[1]
+//*[@id="fcxH9b"]/div[4]/c-wiz[2]/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div[18]/div/div[2]/div[2]/span[1]
+//*[@id="fcxH9b"]/div[4]/c-wiz[2]/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div[18]/div/div[2]/div[2]/span[1]
+/html/body/div[1]/div[4]/c-wiz/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div[18]/div/div[2]/div[2]/span[1]
+
+def get_reviews(self):
+        try:
+            last_height = self.driver.execute_script("return document.body.scrollHeight")
+            count = 1
+            SCROLL_PAUSE_TIME = 0.25
+            while True:
+                # Scroll down to bottom
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(SCROLL_PAUSE_TIME)
+                # Wait to load page
+                try:
+                    print("Count: ", count)
+                    xpath = "/html/body/div[1]/div[4]/c-wiz[2]/div/div[2]/div/div[1]/div/div/div/div[2]/div/div[" + str(
+                        count) + "]/div/div[2]/div[2]"
+                    review = self.driver.find_element_by_xpath(xpath)
+                    if "Full Review" in review.text:
+                        # If full review has not been shown, get it from <span>.
+                        review_text = self.get_reviews_helper(count)
+                        date = self.get_full_date(count)
+                        line = str(date + "¬" + review_text)
+                        self.text_file.write(line + "\n")
+                    else:
+                        date = self.get_full_date(count)
+                        line = str(date + "¬" + review.text)
+                        self.text_file.write(line + "\n")
+                    count = count + 1
+                    try:
+                        show_more_reviews_button = self.driver.find_element_by_class_name("Ir7OJc")
+                        show_more_reviews_button.click()
+                    except NoSuchElementException: # For read more review button
+                        pass
+                except NoSuchElementException: # For read more review button
+                    break
+
+                # Calculate new scroll height and compare with last scroll height
+                new_height = self.driver.execute_script("return document.body.scrollHeight")
+                if new_height == last_height:
+                    pass
+                last_height = new_height
+        except NoSuchElementException:
+            self.text_file.close()
+        except ElementNotInteractableException:
+            self.text_file.close()
+        finally:
+            self.text_file.close()
+            self.driver.close()
