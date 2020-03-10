@@ -1,7 +1,9 @@
 package com.harriydaran.webscraperservice.domain;
 
 import com.harriydaran.webscraperservice.model.Review;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -42,7 +44,6 @@ public class PlayStoreScraper {
         List<WebElement> showAllReviewsBtn = driver.findElements(By.cssSelector(cssSelectorShowAllReviewsBtn()));
         if (showAllReviewsBtn.size() > 0){
           showAllReviewsBtn.get(0).click();
-          System.out.println("Button Clicked");
         }
 
         WebElement reviewRaw = driver.findElement(By.xpath(xPathReview(count)));
@@ -56,6 +57,13 @@ public class PlayStoreScraper {
         }
         WebElement authorRaw = reviewRaw.findElement(By.xpath(xPathReviewAuthor(count)));
         review.setAuthor(authorRaw.getText());
+
+        WebElement dateRaw = reviewRaw.findElement(By.xpath(xPathReviewDate(count)));
+        review.setDate(new Date(dateRaw.getText()));
+
+        WebElement ratingRaw = reviewRaw.findElement(By.xpath(xPathReviewRating(count)));
+        review.setRating(convertRawRatingToInt(ratingRaw.getAttribute("aria-label")));
+
         reviews.add(review);
         count++;
       }
@@ -71,8 +79,20 @@ public class PlayStoreScraper {
     return reviews;
   }
 
+  public static int convertRawRatingToInt(String rawRating){
+    return Integer.parseInt(String.valueOf(rawRating.charAt(6)));
+  }
+
+  public static String xPathReviewRating(int position){
+    return "/html/body/div[1]/div[4]/c-wiz/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div["+position+"]/div/div[2]/div[1]/div[1]/div/span[1]/div/div";
+  }
+
+  public static String xPathReviewDate(int position){
+    return "/html/body/div[1]/div[4]/c-wiz/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div["+position+"]/div/div[2]/div[1]/div[1]/div/span[2]";
+  }
+
   public static String xPathReviewAuthor(int position){
-    return "/html/body/div[1]/div[4]/c-wiz/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div["+position+"]/div/div[2]/div[1]/div[1]/span"
+    return "/html/body/div[1]/div[4]/c-wiz/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div["+position+"]/div/div[2]/div[1]/div[1]/span";
   }
 
   public static String xPathReview(int position){
