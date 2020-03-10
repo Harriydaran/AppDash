@@ -42,6 +42,7 @@ public class PlayStoreScraper {
         List<WebElement> showAllReviewsBtn = driver.findElements(By.cssSelector(cssSelectorShowAllReviewsBtn()));
         if (showAllReviewsBtn.size() > 0){
           showAllReviewsBtn.get(0).click();
+          System.out.println("Button Clicked");
         }
 
         WebElement reviewRaw = driver.findElement(By.xpath(xPathReview(count)));
@@ -53,6 +54,8 @@ public class PlayStoreScraper {
         }else {
           review.setText(reviewRaw.getText());
         }
+        WebElement authorRaw = reviewRaw.findElement(By.xpath(xPathReviewAuthor(count)));
+        review.setAuthor(authorRaw.getText());
         reviews.add(review);
         count++;
       }
@@ -66,6 +69,10 @@ public class PlayStoreScraper {
       }
     }
     return reviews;
+  }
+
+  public static String xPathReviewAuthor(int position){
+    return "/html/body/div[1]/div[4]/c-wiz/div/div[2]/div/div[1]/div/div/div[1]/div[2]/div/div["+position+"]/div/div[2]/div[1]/div[1]/span"
   }
 
   public static String xPathReview(int position){
