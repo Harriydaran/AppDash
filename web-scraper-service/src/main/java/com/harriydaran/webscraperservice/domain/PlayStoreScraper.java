@@ -1,10 +1,11 @@
 package com.harriydaran.webscraperservice.domain;
 
 import com.harriydaran.webscraperservice.model.Review;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -12,15 +13,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-// TODO: Scrape Review Date
-// TODO: Scrape Review Rating
-// TODO: Scrape Review Author
 
 public class PlayStoreScraper {
 
   private static final long DELAY = 2000;
-
   private static final String PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=";
+  private static final Logger LOGGER = Logger.getLogger("com.harriydaran.webscraperservice.domain.PlayStoreScraper");
 
   public static List<Review> scrape(final String appPackage) {
     System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver");
@@ -50,11 +48,13 @@ public class PlayStoreScraper {
         Review review = new Review();
         if (reviewRaw.getText().contains("Full Review")){
           driver.findElement(By.xpath(xPathFullReviewBtn(count))).click();
-          WebElement fullReviewText = driver.findElement(By.xpath(xPathFullReviewText(count)));
-          review.setText(fullReviewText.getText());
+          WebElement fullReviewTextRaw = driver.findElement(By.xpath(xPathFullReviewText(count)));
+          review.setText(fullReviewTextRaw.getText());
         }else {
           review.setText(reviewRaw.getText());
         }
+        reviews.add(review);
+
         WebElement authorRaw = reviewRaw.findElement(By.xpath(xPathReviewAuthor(count)));
         review.setAuthor(authorRaw.getText());
 
@@ -64,17 +64,14 @@ public class PlayStoreScraper {
         WebElement ratingRaw = reviewRaw.findElement(By.xpath(xPathReviewRating(count)));
         review.setRating(convertRawRatingToInt(ratingRaw.getAttribute("aria-label")));
 
-        reviews.add(review);
         count++;
       }
 
     } catch (NoSuchElementException e) {
-      System.out.println("No more Elements");
+      LOGGER.log(Level.INFO, "No more elements");
     } finally {
       driver.close();
-      for(Review review: reviews){
-        System.out.println(review.getText());
-      }
+      LOGGER.log(Level.INFO, "Closed web driver");
     }
     return reviews;
   }
