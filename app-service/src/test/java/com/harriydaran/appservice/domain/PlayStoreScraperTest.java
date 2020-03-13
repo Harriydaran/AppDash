@@ -85,4 +85,11 @@ class PlayStoreScraperTest {
     String expected = "#fcxH9b > div.WpDbMd > c-wiz > div > div.ZfcPIb > div > div.JNury.Ekdcne > div > div > div.W4P4ne > div:nth-child(2) > div.PFAhAf > div";
     assertEquals(expected, PlayStoreScraper.cssSelectorShowAllReviewsBtn());
   }
+
+  @Test
+  void testGetAppNameFromPackage(){
+    String appPackage = "com.harriydaran.appdash";
+    String expected = "appdash";
+    assertEquals(expected, PlayStoreScraper.convertPackageToAppName(appPackage));
+  }
 }

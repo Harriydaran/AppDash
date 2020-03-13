@@ -28,9 +28,10 @@ public class PlayStoreScraper {
     driver.get(PLAYSTORE_URL + appPackage  +"&showAllReviews=true");
     List<Review> reviews = new ArrayList<>();
 
+    // TODO: Get App Category
     App app = new App();
-    app.setName(appPackage);
-
+    app.setAppPackage(appPackage);
+    app.setName(convertPackageToAppName(appPackage));
     try {
       Thread.sleep(DELAY);
     } catch (InterruptedException e) {
@@ -81,6 +82,10 @@ public class PlayStoreScraper {
     }
 
     return new AppReviewSet(app, reviews);
+  }
+
+  public static String convertPackageToAppName(String appPackage){
+    return appPackage.substring(appPackage.indexOf('.', appPackage.indexOf('.')+1)).substring(1);
   }
 
   public static int convertRawRatingToInt(String rawRating){

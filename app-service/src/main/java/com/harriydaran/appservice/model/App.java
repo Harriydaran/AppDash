@@ -15,6 +15,7 @@ public class App {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String name;
+  private String appPackage;
   private String category;
 
   @JsonIgnore
@@ -26,6 +27,14 @@ public class App {
 
   public List<Review> getReviews() {
     return reviews;
+  }
+
+  public String getAppPackage() {
+    return appPackage;
+  }
+
+  public void setAppPackage(String appPackage) {
+    this.appPackage = appPackage;
   }
 
   public void setReviews(List<Review> reviews) {
