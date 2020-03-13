@@ -13,25 +13,23 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 
 public class PlayStoreScraper {
 
   private static final long DELAY = 2000;
   private static final String PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=";
-  private static final Logger LOGGER = Logger.getLogger("com.harriydaran.webscraperservice.domain.PlayStoreScraper");
+  private static final Logger LOGGER = Logger.getLogger("com.harriydaran.appservice.domain.PlayStoreScraper");
+  private WebDriver driver;
 
-  public static AppReviewSet scrape(final String appPackage) {
-    System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver");
-    WebDriver driver = new FirefoxDriver();
+  public PlayStoreScraper(WebDriver driver) {
+    this.driver = driver;
+  }
+
+  public AppReviewSet scrape(final String appPackage) {
     driver.get(PLAYSTORE_URL + appPackage  +"&showAllReviews=true");
     List<Review> reviews = new ArrayList<>();
 
-    // TODO: Get App Category
-    App app = new App();
-    app.setAppPackage(appPackage);
-    app.setName(convertPackageToAppName(appPackage));
     try {
       Thread.sleep(DELAY);
     } catch (InterruptedException e) {
@@ -41,6 +39,9 @@ public class PlayStoreScraper {
     JavascriptExecutor js = (JavascriptExecutor) driver;
     int count = 1;
     String category = driver.findElement(By.xpath(xPathAppCategory())).getText();
+    App app = new App();
+    app.setAppPackage(appPackage);
+    app.setName(convertPackageToAppName(appPackage));
     app.setCategory(category);
     try {
       while (true){

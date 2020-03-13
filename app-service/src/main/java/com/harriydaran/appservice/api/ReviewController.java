@@ -1,7 +1,7 @@
 package com.harriydaran.appservice.api;
 
-import com.harriydaran.appservice.dao.ReviewRepository;
 import com.harriydaran.appservice.model.Review;
+import com.harriydaran.appservice.service.ReviewService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/reviews")
 public class ReviewController {
 
-  private ReviewRepository reviewRepository;
+  private ReviewService reviewService;
 
   @Autowired
-  public ReviewController(ReviewRepository reviewRepository) {
-    this.reviewRepository = reviewRepository;
+  public ReviewController(ReviewService reviewService) {
+    this.reviewService = reviewService;
   }
 
   @GetMapping("/{app}")
   public List<Review> getAppReviews(@PathVariable("app") final String app){
-    return reviewRepository.findByApp_Name(app);
+    return reviewService.getAppReviews(app);
   }
 }

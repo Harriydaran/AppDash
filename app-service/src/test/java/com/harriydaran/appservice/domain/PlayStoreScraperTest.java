@@ -12,7 +12,8 @@ class PlayStoreScraperTest {
   void testScrapeReturnsNotNull() {
     AppReviewSet appReviewSet;
     String appPackage = "com.cafelabs.curlme";
-    appReviewSet = PlayStoreScraper.scrape(appPackage);
+    PlayStoreScraper playStoreScraper = new PlayStoreScraper(new WebDriverConfig().getDriver());
+    appReviewSet = playStoreScraper.scrape(appPackage);
     assertNotNull(appReviewSet);
   }
 
@@ -20,7 +21,8 @@ class PlayStoreScraperTest {
   void testScrapeReturnsNotNullApp() {
     AppReviewSet appReviewSet;
     String appPackage = "com.cafelabs.curlme";
-    appReviewSet = PlayStoreScraper.scrape(appPackage);
+    PlayStoreScraper playStoreScraper = new PlayStoreScraper(new WebDriverConfig().getDriver());
+    appReviewSet = playStoreScraper.scrape(appPackage);
     assertNotNull(appReviewSet.getApp());
   }
 
@@ -28,7 +30,8 @@ class PlayStoreScraperTest {
   void testScrapeReturnsNotNullReviews() {
     AppReviewSet appReviewSet;
     String appPackage = "com.cafelabs.curlme";
-    appReviewSet = PlayStoreScraper.scrape(appPackage);
+    PlayStoreScraper playStoreScraper = new PlayStoreScraper(new WebDriverConfig().getDriver());
+    appReviewSet = playStoreScraper.scrape(appPackage);
     assertNotNull(appReviewSet.getReviews());
   }
 
