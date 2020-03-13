@@ -40,7 +40,8 @@ public class PlayStoreScraper {
 
     JavascriptExecutor js = (JavascriptExecutor) driver;
     int count = 1;
-
+    String category = driver.findElement(By.xpath(xPathAppCategory())).getText();
+    app.setCategory(category);
     try {
       while (true){
 
@@ -118,6 +119,10 @@ public class PlayStoreScraper {
 
   public static String cssSelectorShowAllReviewsBtn(){
     return "#fcxH9b > div.WpDbMd > c-wiz > div > div.ZfcPIb > div > div.JNury.Ekdcne > div > div > div.W4P4ne > div:nth-child(2) > div.PFAhAf > div";
+  }
+
+  public static String xPathAppCategory(){
+    return "/html/body/div[1]/div[4]/c-wiz/div/div[2]/div/div[1]/div/c-wiz/c-wiz/div/div[2]/div/div[1]/div[1]/div[1]/div[1]/span[2]/a";
   }
 
 }
