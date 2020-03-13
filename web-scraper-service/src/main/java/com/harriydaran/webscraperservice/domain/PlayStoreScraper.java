@@ -1,5 +1,7 @@
 package com.harriydaran.webscraperservice.domain;
 
+import com.harriydaran.webscraperservice.model.App;
+import com.harriydaran.webscraperservice.model.AppReviewSet;
 import com.harriydaran.webscraperservice.model.Review;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,11 +22,14 @@ public class PlayStoreScraper {
   private static final String PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=";
   private static final Logger LOGGER = Logger.getLogger("com.harriydaran.webscraperservice.domain.PlayStoreScraper");
 
-  public static List<Review> scrape(final String appPackage) {
+  public static AppReviewSet scrape(final String appPackage) {
     System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver");
     WebDriver driver = new FirefoxDriver();
     driver.get(PLAYSTORE_URL + appPackage  +"&showAllReviews=true");
     List<Review> reviews = new ArrayList<>();
+
+    App app = new App();
+    app.setName(appPackage);
 
     try {
       Thread.sleep(DELAY);
@@ -53,6 +58,7 @@ public class PlayStoreScraper {
         }else {
           review.setText(reviewRaw.getText());
         }
+        review.setApp(app);
         reviews.add(review);
 
         WebElement authorRaw = reviewRaw.findElement(By.xpath(xPathReviewAuthor(count)));
@@ -73,7 +79,8 @@ public class PlayStoreScraper {
       driver.close();
       LOGGER.log(Level.INFO, "Closed web driver");
     }
-    return reviews;
+
+    return new AppReviewSet(app, reviews);
   }
 
   public static int convertRawRatingToInt(String rawRating){

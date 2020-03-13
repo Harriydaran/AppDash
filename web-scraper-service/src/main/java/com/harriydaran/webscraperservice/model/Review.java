@@ -1,11 +1,16 @@
 package com.harriydaran.webscraperservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Review {
@@ -17,10 +22,24 @@ public class Review {
   @Column( length = 100000 )
   private String text;
   private int rating;
+  @Temporal(value = TemporalType.DATE)
   private Date date;
   private String author;   // Only Storing this to obtain gender analysis
 
+  @JsonIgnore
+  @ManyToOne
+  @JoinColumn(name = "app_id", nullable = false)
+  private App app;
+
   public Review() {
+  }
+
+  public App getApp() {
+    return app;
+  }
+
+  public void setApp(App app) {
+    this.app = app;
   }
 
   public Long getId() {
