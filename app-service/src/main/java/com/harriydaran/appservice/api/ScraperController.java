@@ -1,7 +1,6 @@
 package com.harriydaran.appservice.api;
 
 import com.harriydaran.appservice.model.AppReviewSet;
-import com.harriydaran.appservice.service.ReviewService;
 import com.harriydaran.appservice.service.ScraperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
