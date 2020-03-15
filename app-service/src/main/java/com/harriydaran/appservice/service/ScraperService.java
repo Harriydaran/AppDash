@@ -21,13 +21,17 @@ public class ScraperService {
     this.appRepository = appRepository;
   }
 
-  public AppReviewSet getReviews(final String app){
-    // TODO: Check if requested App already exists in DB before continuing
+  public AppReviewSet getReviews(final String appPackage){
+    if (appExists(appPackage)) return null;
     PlayStoreScraper playStoreScraper = new PlayStoreScraper(new WebDriverConfig().getDriver());
-    AppReviewSet appReviewSet = playStoreScraper.scrape(app);
+    AppReviewSet appReviewSet = playStoreScraper.scrape(appPackage);
     appRepository.save(appReviewSet.getApp());
     reviewRepository.saveAll(appReviewSet.getReviews());
     return appReviewSet;
+  }
+
+  public boolean appExists(final String appPackage){
+    return appRepository.findByAppPackage(appPackage) != null;
   }
 
 }

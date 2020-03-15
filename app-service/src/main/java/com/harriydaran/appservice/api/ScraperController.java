@@ -20,9 +20,9 @@ public class ScraperController {
     this.scraperService = scraperService;
   }
 
-  @GetMapping("/{app}")
-  public AppReviewSet getReviews(@PathVariable("app") String app){
-    return scraperService.getReviews(app);
+  @GetMapping("/{appPackage}")
+  public AppReviewSet getReviews(@PathVariable("appPackage") String appPackage){
+    return scraperService.getReviews(appPackage);
   }
 
 }
