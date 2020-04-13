@@ -10,17 +10,17 @@ import PageNotFound from "./Screens/PageNotFound";
 
 const App = () => {
   return (
-      <AuthProvider>
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <Route component={PageNotFound} />
-          </Switch>
-        </Router>
-      </AuthProvider>
+    <AuthProvider>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <Route component={PageNotFound} />
+        </Switch>
+      </Router>
+    </AuthProvider>
   );
 };
 
