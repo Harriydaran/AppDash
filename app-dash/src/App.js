@@ -1,17 +1,11 @@
-import React, { Component } from 'react';
-import './App.css';
-import Dashboard from './components/Dashboard';
+import React from "react";
 
-
-class App extends Component {
-
-    render() {
-        return (
-            <div className="App">
-               <Dashboard/>
-            </div>
-        );
-    }
+function App() {
+  return (
+    <>
+      <h1>App Dash</h1>
+    </>
+  );
 }
 
 export default App;
